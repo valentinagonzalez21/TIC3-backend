@@ -1,0 +1,9 @@
+// EJECUCIÓN //
+Para correr servidor:
+node src/index.js
+
+Si se tiene instalado nodemon (para ver cambios en tiempo real mientras editás):
+nodemon src/index.js
+
+// Sobre configuraciones //
+Editar en archivo src/config/config.js
