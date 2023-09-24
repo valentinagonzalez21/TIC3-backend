@@ -31,7 +31,12 @@ export const UserArtist = sequelize.define('user_artist', {
 });
 
 UserArtist.hasOne(Profile, {
-    foreignKey: 'user_id'
+    foreignKey: 'user_id',
+    sourceKey: 'id'
+});
+Profile.belongsTo(UserArtist, {
+    foreignKey: 'user_id',
+    targetId: 'id'
 });
     
 
