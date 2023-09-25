@@ -12,7 +12,7 @@ export const Profile = sequelize.define('profile', {
         type: DataTypes.STRING
     },
     musicGenre: {
-        type: DataTypes.STRING
+        type: DataTypes.ENUM('pop', 'rock', 'jazz', 'clásic', 'alternativo', 'indie', 'cumbia', 'rap/trap','otro') //hay que ver como generalizar esto
     },
     igUsername: {
         type: DataTypes.STRING
