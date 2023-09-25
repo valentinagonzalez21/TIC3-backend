@@ -39,6 +39,6 @@ export const UserBussiness = sequelize.define('user_bussiness', {
     }
     
 
-})
+});
     
 

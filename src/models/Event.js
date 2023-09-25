@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database/database.js';
 import { UserBussiness } from './UserBussiness.js';
+import { UserArtist } from './UserArtist.js';
 
 export const Event = sequelize.define('event', {
     id: {
@@ -52,5 +53,15 @@ UserBussiness.hasMany(Event, {
     sourceKey: 'rut'
 });
 Event.belongsTo(UserBussiness, {
-    
+    foreignKey: 'bussiness_rut',
+    targetId: 'rut'
+});
+
+UserArtist.hasMany(Event, {
+    foreignKey: 'artist_assigned_id',
+    sourceKey: 'id'
+});
+Event.belongsTo(UserArtist, {
+    foreignKey: 'artist_assigned_id',
+    targetId: 'id'
 });

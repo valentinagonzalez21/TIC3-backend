@@ -4,6 +4,8 @@ import './models/UserArtist.js'
 import './models/UserBussiness.js'
 import './models/Profile.js'
 import './models/Event.js'
+import './models/Application.js'
+import './models/Notification.js'
 
 const port = 3000;
 
