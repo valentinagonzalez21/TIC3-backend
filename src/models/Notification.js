@@ -13,7 +13,8 @@ export const Notification = sequelize.define('notification', {
     },
     type: {
         type: DataTypes.STRING
-    }
+    },
+    timestamps: false
 });
 
 UserBussiness.hasMany(Notification, {

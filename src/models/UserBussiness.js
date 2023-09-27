@@ -36,9 +36,8 @@ export const UserBussiness = sequelize.define('user_bussiness', {
     },
     rating:{
         type: DataTypes.INTEGER,
-    }
-    
-
+    },
+    timestamps: false
 });
     
 

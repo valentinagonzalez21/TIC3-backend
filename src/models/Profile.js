@@ -22,7 +22,8 @@ export const Profile = sequelize.define('profile', {
     },
     rating: {
         type: DataTypes.INTEGER
-    }
+    },
+    timestamps: false
 })
     
 

@@ -45,7 +45,8 @@ export const Event = sequelize.define('event', {
     multipleDates: {
         type: DataTypes.BOOLEAN,
         allowNull: false
-    }
+    },
+    timestamps: false
 });
 
 UserBussiness.hasMany(Event, {

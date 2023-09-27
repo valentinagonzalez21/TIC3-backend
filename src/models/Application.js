@@ -6,7 +6,8 @@ import { UserArtist } from './UserArtist.js';
 export const Application = sequelize.define('application', {
     msj: {
         type: DataTypes.STRING
-    }
+    },
+    timestamps: false
 });
 
 Event.hasMany(Application, {

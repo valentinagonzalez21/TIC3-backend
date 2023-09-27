@@ -28,6 +28,7 @@ export const UserArtist = sequelize.define('user_artist', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    timestamps: false
 });
 
 UserArtist.hasOne(Profile, {
