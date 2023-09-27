@@ -4,11 +4,19 @@ import { Event } from './Event.js';
 import { UserArtist } from './UserArtist.js';
 
 export const Application = sequelize.define('application', {
+    id: {
+        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false
+    },
     msj: {
         type: DataTypes.STRING
     },
-    timestamps: false
-});
+},
+    {
+        timestamps: false
+    });
 
 Event.hasMany(Application, {
     foreignKey: 'event_id',

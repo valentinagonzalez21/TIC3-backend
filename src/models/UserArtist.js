@@ -28,8 +28,11 @@ export const UserArtist = sequelize.define('user_artist', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    timestamps: false
-});
+
+},
+    {
+        timestamps: false
+    });
 
 UserArtist.hasOne(Profile, {
     foreignKey: 'user_id',
@@ -39,5 +42,5 @@ Profile.belongsTo(UserArtist, {
     foreignKey: 'user_id',
     targetId: 'id'
 });
-    
+
 

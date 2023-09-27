@@ -19,7 +19,7 @@ export const Event = sequelize.define('event', {
         allowNull: false
     },
     genrePreffered: {
-        type: DataTypes.ENUM('pop', 'rock', 'jazz', 'clásic', 'alternativo', 'indie', 'cumbia', 'rap/trap','otro') //hay que ver como generalizar esto
+        type: DataTypes.ENUM('pop', 'rock', 'jazz', 'clásic', 'alternativo', 'indie', 'cumbia', 'rap/trap', 'otro') //hay que ver como generalizar esto
     },
     description: {
         type: DataTypes.STRING
@@ -46,8 +46,11 @@ export const Event = sequelize.define('event', {
         type: DataTypes.BOOLEAN,
         allowNull: false
     },
-    timestamps: false
-});
+
+},
+    {
+        timestamps: false
+    });
 
 UserBussiness.hasMany(Event, {
     foreignKey: 'bussiness_rut',

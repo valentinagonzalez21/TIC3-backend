@@ -4,6 +4,12 @@ import { UserBussiness } from './UserBussiness.js';
 import { UserArtist } from './UserArtist.js';
 
 export const Notification = sequelize.define('notification', {
+    id: {
+        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false
+    },
     seen: {
         type: DataTypes.BOOLEAN,
         allowNull: false
@@ -14,8 +20,11 @@ export const Notification = sequelize.define('notification', {
     type: {
         type: DataTypes.STRING
     },
-    timestamps: false
-});
+
+},
+    {
+        timestamps: false
+    });
 
 UserBussiness.hasMany(Notification, {
     foreignKey: 'bussiness_rut',
