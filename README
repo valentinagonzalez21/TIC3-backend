@@ -7,3 +7,21 @@ nodemon src/index.js
 
 // Sobre configuraciones //
 Editar en archivo src/config/config.js
+
+// BASE DE DATOS //
+await sequelize.sync({force: true}); // antes de crear, baja las tablas existentes
+await sequelize.sync(); // crea las tablas solo si no existen
+await sequelize.sync({alter: true}); // hace cambios necesarios para que BDD matchee con el modelo
+
+// CÓDIGOS HTTP //
+
+Satisfactoria:
+200 - OK
+
+Error del cliente
+404 - Not Found
+409 - Conflicto con el estado actual del servidor (ej. usuario ya existe)
+
+Error del servidor
+500 - Error interno del servidor, que no supo resolver
+
