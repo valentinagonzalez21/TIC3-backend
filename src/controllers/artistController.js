@@ -1,6 +1,6 @@
-import { UserArtist } from "../models/UserArtist.js";
+import { Artist } from "../models/Artist.js";
 
-export const getUsersArtist = async (req, res) => {
+export const getArtists = async (req, res) => {
     try {
         const users = await UserArtist.findAll();
         res.status(200).json(users)
@@ -9,22 +9,22 @@ export const getUsersArtist = async (req, res) => {
     }
 }
 
-export const getUserArtist = async (req, res) => {
+export const getArtist = async (req, res) => {
     try {
         const { id } = req.params;
-        const userArtist = await UserArtist.findByPk(id);
-        if (userArtist === null) {
+        const artist = await Artist.findByPk(id);
+        if (artist === null) {
             res.status(404).json({ message: "Usuario no encontrado" });
         } else {
-            res.status(200).json(userArtist);
+            res.status(200).json(artist);
         }
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
 }
 
-export const createUserArtist = async (req, res) => {
-    const { id, name, lastName, email, phone, password } = req.body;
+export const createArtist = async (req, res) => {
+ /*   const { id, name, lastName, email, phone, password } = req.body;
     try {
         const [newUserArtist, created] = await UserArtist.findOrCreate({ // await porque es asincrona
             where: { id },
@@ -43,11 +43,11 @@ export const createUserArtist = async (req, res) => {
         }
     } catch (error) {
         return res.status(500).json({ message: error.message })
-    }
+    }*/
 }
 
-export const updateUserArtist = async (req, res) => {
-    try {
+export const updateArtist = async (req, res) => {
+ /*   try {
         const { id } = req.params;
         const { name, lastName, email, phone, password } = req.body;
 
@@ -63,7 +63,7 @@ export const updateUserArtist = async (req, res) => {
         res.status(200).json(userArtist);
     } catch (error) {
         return res.status(500).json({ message: error.message })
-    }
+    }*/
 
 
 }

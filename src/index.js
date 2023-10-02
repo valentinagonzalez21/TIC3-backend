@@ -1,11 +1,11 @@
 import app from './app.js';
 import { sequelize } from './database/database.js';
-import './models/UserArtist.js'
-import './models/UserBussiness.js'
-import './models/Profile.js'
+import './models/Artist.js'
+import './models/Business.js'
 import './models/Event.js'
 import './models/Application.js'
 import './models/Notification.js'
+import './models/User.js'
 
 const port = 3000;
 

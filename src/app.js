@@ -1,6 +1,6 @@
 import express from 'express';
-import userArtistRoutes from './routes/userArtistRoutes.js';
-import userBusinessRoutes from './routes/userBussinessRoutes.js';
+import artistRoutes from './routes/artistRoutes.js';
+import businessRoutes from './routes/businessRoutes.js';
 import loginRoutes from './routes/loginRoutes.js'
 import cors from 'cors'
 
@@ -12,8 +12,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use(userArtistRoutes);
-app.use(userBusinessRoutes);
+app.use(artistRoutes);
+app.use(businessRoutes);
 app.use(loginRoutes);
 
 

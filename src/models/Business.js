@@ -1,9 +1,10 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database/database.js';
-import { Profile } from './Profile.js';
+import { User } from './User.js';
 
-export const UserArtist = sequelize.define('user_artist', {
-    id: {
+
+export const Business = sequelize.define('business', {
+    rut: {
         primaryKey: true,
         type: DataTypes.INTEGER,
         allowNull: false
@@ -12,21 +13,23 @@ export const UserArtist = sequelize.define('user_artist', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    lastName: {
+    legalName: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    email: {
+    description: {
         type: DataTypes.STRING,
-        allowNull: false
     },
     phone: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    password: {
+    location: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    rating: {
+        type: DataTypes.INTEGER,
     },
 
 },
@@ -34,13 +37,12 @@ export const UserArtist = sequelize.define('user_artist', {
         timestamps: false
     });
 
-UserArtist.hasOne(Profile, {
-    foreignKey: 'user_id',
-    sourceKey: 'id'
-});
-Profile.belongsTo(UserArtist, {
-    foreignKey: 'user_id',
-    targetId: 'id'
-});
 
-
+Business.hasOne(User, {
+    foreignKey: 'business_rut',
+    sourceKey: 'rut'
+});
+User.belongsTo(Business, {
+    foreignKey: 'business_rut',
+    targetId: 'rut'
+});

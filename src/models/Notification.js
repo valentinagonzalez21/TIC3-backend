@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database/database.js';
-import { UserBussiness } from './UserBussiness.js';
-import { UserArtist } from './UserArtist.js';
+import { Business } from './Business.js';
+import { Artist } from './Artist.js';
 
 export const Notification = sequelize.define('notification', {
     id: {
@@ -26,20 +26,20 @@ export const Notification = sequelize.define('notification', {
         timestamps: false
     });
 
-UserBussiness.hasMany(Notification, {
+Business.hasMany(Notification, {
     foreignKey: 'bussiness_rut',
     sourceKey: 'rut'
 });
-Notification.belongsTo(UserBussiness, {
+Notification.belongsTo(Business, {
     foreignKey: 'bussiness_rut',
     targetId: 'rut'
 });
 
-UserArtist.hasMany(Notification, {
-    foreignKey: 'user_id',
+Artist.hasMany(Notification, {
+    foreignKey: 'artist_id',
     sourceKey: 'id'
 });
-Notification.belongsTo(UserArtist, {
-    foreignKey: 'user_id',
+Notification.belongsTo(Artist, {
+    foreignKey: 'artist_id',
     targetId: 'id'
 });
