@@ -1,6 +1,6 @@
 import { Business } from "../models/Business.js";
 import { Event } from "../models/Event.js";
-import { User } from "../models/User.js";
+import { User } from "../models/User.js"; 
 
 export const getBusinesses = async (req, res) => {
     try {
@@ -26,63 +26,58 @@ export const getBusiness = async (req, res) => {
 }
 
 export const createBusiness = async (req, res) => {
-    /*const { rut, name, legalName, description, email, phone, location, password, rating } = req.body;
+    const { rut, name, legalName, description, phone, location, email, password } = req.body;
     try {
-        
-        const [newUser, createdUser] = await User.findOrCreate({
-            where: { email },
-            defaults: {
-                password,
-                type: 'business'
-            }
-        });
-        if (createdUser) {
-            const [newBusiness, createdBusiness] = await Business.findOrCreate({ // await porque es asincrona
-                where: { rut },
-                defaults: {
-                    name,
-                    legalName,
-                    description,
-                    phone,
-                    location,
-                    rating,
-                    
-                }
+        const user = await User.findByPk(email);
+        const business = await Business.findByPk(rut);
+        if (user === null && business === null) {
+            const newBusiness = await Business.create({
+                rut,
+                name,
+                legalName,
+                description,
+                phone,
+                location
             });
-            if (createdBusiness) {
-                res.status(200).json(newBusiness)
-            } else {
-                res.status(409).json({ message: "Negocio ya existe" })
-            }
+            const newUser = await User.create({
+                type: 'business',
+                email,
+                password,
+                business_rut: rut
+            })
+            res.status(200).json({ user: newBusiness });
         } else {
-            res.status(409).json({ message: "Usuario ya existe" })
+            res.status(409).json({ message: "Usuario ya existe" });
         }
+
     } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }*/
+        return res.status(500).json({ message: error.message })
+    }
 }
 
 export const updateBusiness = async (req, res) => {
-   /* try {
+    try {
         const { id } = req.params;
-        const { name, legalName, description, email, phone, location, password, rating } = req.body;
+        const { name, legalName, description, phone, location, rating } = req.body;
 
-        const userBusiness = await UserBussiness.findByPk(id);
-        userBusiness.name = name;
-        userBusiness.legalName = legalName;
-        userBusiness.description = description;
-        userBusiness.email = email;
-        userBusiness.phone = phone;
-        userBusiness.location = location;
-        userBusiness.password = password;
-        userBusiness.rating = rating;
+        const business = await Business.findByPk(id);
+        if (business === null) {
+            res.status(404).json({ message: "Usuario no existe" });
+        } else {
+            business.name = name;
+            business.legalName = legalName;
+            business.description = description;
+            business.phone = phone;
+            business.location = location;
+            business.rating = rating;
 
-        await userBusiness.save();
+            await business.save();
 
-        res.status(200).json(userBusiness);
+            res.status(200).json(business);
+        }
     } catch (error) {
         return res.status(500).json({ message: error.message })
-    }*/
+    }
 }
 
 export const getEventsFromBusiness = async (req, res) => {
