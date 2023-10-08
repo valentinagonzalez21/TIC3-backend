@@ -1,9 +1,11 @@
 import { Artist } from "../models/Artist.js";
+import { User } from "../models/User.js"
 
 export const getArtists = async (req, res) => {
     try {
-        const users = await UserArtist.findAll();
-        res.status(200).json(users)
+        const artists = await Artist.findAll();
+        console.log(artists);
+        res.status(200).json(artists)
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
@@ -24,46 +26,60 @@ export const getArtist = async (req, res) => {
 }
 
 export const createArtist = async (req, res) => {
- /*   const { id, name, lastName, email, phone, password } = req.body;
+    const { id, name, lastName, email, phone, password } = req.body;
     try {
-        const [newUserArtist, created] = await UserArtist.findOrCreate({ // await porque es asincrona
-            where: { id },
-            defaults: {
+        const user = await User.findByPk(email);
+        const artist = await Artist.findByPk(id);
+        if (user === null && artist === null) {
+            const newArtist = await Artist.create({
+                id,
                 name,
                 lastName,
-                email,
                 phone,
-                password
-            }
-        });
-        if (created) {
-            res.status(200).json(newUserArtist)
+            });
+            const newUser = await User.create({
+                type: 'artist',
+                email,
+                password,
+                artist_id: id
+            })
+            res.status(200).json({ user: newArtist });
         } else {
-            res.status(409).json({ message: "Usuario ya existe" })
+            res.status(409).json({ message: "Usuario ya existe" });
         }
+
     } catch (error) {
         return res.status(500).json({ message: error.message })
-    }*/
+    }
 }
 
 export const updateArtist = async (req, res) => {
- /*   try {
+    try {
         const { id } = req.params;
-        const { name, lastName, email, phone, password } = req.body;
+        const { name, lastName, phone, artisticName, picture, description, musicGenre, igUsername, links, rating } = req.body;
 
-        const userArtist = await UserArtist.findByPk(id);
-        userArtist.name = name;
-        userArtist.lastName = lastName;
-        userArtist.email = email;
-        userArtist.phone = phone;
-        userArtist.password = password;
+        const artist = await Artist.findByPk(id);
+        if (artist === null) {
+            res.status(404).json({ message: "Usuario no existe" });
+        } else {
+            artist.name = name;
+            artist.lastName = lastName;
+            artist.phone = phone;
+            artist.artisticName = artisticName;
+            artist.picture = picture;
+            artist.description = description;
+            artist.musicGenre = musicGenre;
+            artist.igUsername = igUsername;
+            artist.links = links;
+            artist.rating = rating;
 
-        await userArtist.save();
+            await artist.save();
 
-        res.status(200).json(userArtist);
+            res.status(200).json(artist);
+        }
     } catch (error) {
         return res.status(500).json({ message: error.message })
-    }*/
+    }
 
 
 }
