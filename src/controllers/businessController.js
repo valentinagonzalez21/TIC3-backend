@@ -1,6 +1,6 @@
 import { Business } from "../models/Business.js";
 import { Event } from "../models/Event.js";
-import { User } from "../models/User.js"; 
+import { User } from "../models/User.js";
 
 export const getBusinesses = async (req, res) => {
     try {
@@ -14,11 +14,11 @@ export const getBusinesses = async (req, res) => {
 export const getBusiness = async (req, res) => {
     try {
         const { id } = req.params;
-        const businesses = await Business.findByPk(id);
-        if (businesses === null) {
+        const business = await Business.findByPk(id);
+        if (business === null) {
             res.status(404).json({ message: "Usuario no encontrado" });
         } else {
-            res.status(200).json(businesses);
+            res.status(200).json(business);
         }
     } catch (error) {
         return res.status(500).json({ message: error.message })
@@ -81,37 +81,53 @@ export const updateBusiness = async (req, res) => {
 }
 
 export const getEventsFromBusiness = async (req, res) => {
-  /*  try {
+    try {
         const { id } = req.params;
+        const business = await Business.findByPk(id);
+        if (business === null) {
+            res.status(404).json({ message: "Negocio no encontrado" });
+        } else {
+            const events = await Event.findAll({
+                where: {
+                    business_rut: id
+                }
+            });
+            res.status(200).json({ events: events });
+        }
 
     } catch (error) {
         return res.status(500).json({ message: error.message });
-    }*/
+    }
 
 }
 
 export const createEventFromBusiness = async (req, res) => {
-  /*  const { id } = req.params;
+    const { id } = req.params;
     const { name, date, genrePreffered, description, time, equipment, paid, picture, applicationDeadline, multipleDates } = req.body;
-    
-    try {
-        const newEvent = await Event.create({
-            name, 
-            date, 
-            genrePreffered, 
-            description, 
-            time, 
-            equipment, 
-            paid, 
-            picture, 
-            applicationDeadline, 
-            multipleDates,
-            bussiness_rut: id  
-        });
 
-        res.status(200).json(newEvent)
+    try {
+        const business = await Business.findByPk(id);
+        if (business === null) {
+            res.status(404).json({ message: "Negocio no encontrado" });
+        } else {
+            const newEvent = await Event.create({
+                name,
+                date,
+                genrePreffered,
+                description,
+                time,
+                equipment,
+                paid,
+                picture,
+                applicationDeadline,
+                multipleDates,
+                business_rut: id
+            });
+
+            res.status(200).json(newEvent);
+        }
 
     } catch (error) {
         return res.status(500).json({ message: error.message });
-    }*/
+    }
 }

@@ -15,7 +15,7 @@ export const Event = sequelize.define('event', {
         allowNull: false
     },
     date: {
-        type: DataTypes.ARRAY(DataTypes.DATEONLY), // ver como funciona esto bien
+        type: DataTypes.DATEONLY,
         allowNull: false
     },
     genrePreffered: {
@@ -36,10 +36,10 @@ export const Event = sequelize.define('event', {
         allowNull: false
     },
     picture: {
-        type: DataTypes.STRING
+        type: DataTypes.BLOB
     },
     applicationDeadline: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false
     },
     multipleDates: {
@@ -53,11 +53,11 @@ export const Event = sequelize.define('event', {
     });
 
 Business.hasMany(Event, {
-    foreignKey: 'bussiness_rut',
+    foreignKey: 'business_rut',
     sourceKey: 'rut'
 });
 Event.belongsTo(Business, {
-    foreignKey: 'bussiness_rut',
+    foreignKey: 'business_rut',
     targetId: 'rut'
 });
 
