@@ -1,6 +1,7 @@
 import { Business } from "../models/Business.js";
 import { Event } from "../models/Event.js";
 import { User } from "../models/User.js";
+import {Op} from 'sequelize';
 
 export const getBusinesses = async (req, res) => {
     try {
@@ -143,3 +144,34 @@ export const createEventFromBusiness = async (req, res) => {
     }
 }
 
+export const getUpcomingEventsFromBusiness = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const business = await Business.findByPk(id);
+        if (business === null) {
+            res.status(404).json({ message: "Negocio no encontrado" });
+        } else {
+            let date = new Date() // today
+            let currentDay= String(date.getDate()).padStart(2, '0');
+            let currentMonth = String(date.getMonth()+1).padStart(2,"0");
+            let currentYear = String(date.getFullYear());
+            const today = currentYear + '-' + currentMonth + '-' + currentDay;
+
+            console.log(today)
+
+            const events = await Event.findAll({
+                where: {
+                   [Op.and]: [
+                    {business_rut: id},
+                    {date: {[Op.gte]: today}}
+                   ] 
+                },
+                order: [['date', 'ASC']], // los mas cercanos a hoy primero
+            });
+            res.status(200).json({ events: events });
+        }
+       
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
