@@ -11,6 +11,17 @@ export const getBusinesses = async (req, res) => {
     }
 }
 
+export const getBusinessesNames = async (req, res) => {
+    try {
+        const businesses = await Business.findAll({
+            attributes: ['name']
+        });
+        res.status(200).json({ businessesNames: businesses });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
 export const getBusiness = async (req, res) => {
     try {
         const { id } = req.params;
@@ -131,3 +142,4 @@ export const createEventFromBusiness = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 }
+
