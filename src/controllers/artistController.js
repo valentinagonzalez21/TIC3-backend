@@ -1,5 +1,7 @@
 import { Artist } from "../models/Artist.js";
-import { User } from "../models/User.js"
+import { User } from "../models/User.js";
+import { Event } from "../models/Event.js";
+import {Op} from 'sequelize';
 
 export const getArtists = async (req, res) => {
     try {
@@ -82,5 +84,37 @@ export const updateArtist = async (req, res) => {
     }
 
 
+}
+
+export const getUpcomingEventsFromArtist = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const artist = await Artist.findByPk(id);
+        if (artist === null) {
+            res.status(404).json({ message: "Artista no encontrado" });
+        } else {
+            let date = new Date() // today
+            let currentDay= String(date.getDate()).padStart(2, '0');
+            let currentMonth = String(date.getMonth()+1).padStart(2,"0");
+            let currentYear = String(date.getFullYear());
+            const today = currentYear + '-' + currentMonth + '-' + currentDay;
+
+            console.log(today)
+
+            const events = await Event.findAll({
+                where: {
+                   [Op.and]: [
+                    {artist_assigned_id: id},
+                    {date: {[Op.gte]: today}}
+                   ] 
+                },
+                order: [['date', 'ASC']], // los mas cercanos a hoy primero
+            });
+            res.status(200).json({ events: events });
+        }
+       
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
 }
 
