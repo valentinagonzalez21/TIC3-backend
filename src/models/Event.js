@@ -38,14 +38,14 @@ export const Event = sequelize.define('event', {
     picture: {
         type: DataTypes.BLOB
     },
-    applicationDeadline: {
-        type: DataTypes.DATEONLY,
+    location: {
+        type: DataTypes.STRING,
         allowNull: false
     },
-    multipleDates: {
-        type: DataTypes.BOOLEAN,
+    neighborhood: {
+        type: DataTypes.STRING,
         allowNull: false
-    },
+    }
 
 },
     {

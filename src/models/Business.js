@@ -31,6 +31,9 @@ export const Business = sequelize.define('business', {
     rating: {
         type: DataTypes.INTEGER,
     },
+    webPage: {
+        type: DataTypes.STRING
+    }
 
 },
     {

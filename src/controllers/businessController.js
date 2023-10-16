@@ -38,7 +38,7 @@ export const getBusiness = async (req, res) => {
 }
 
 export const createBusiness = async (req, res) => {
-    const { rut, name, legalName, description, phone, location, email, password } = req.body;
+    const { rut, name, legalName, description, phone, location, webPage, email, password } = req.body;
     try {
         const user = await User.findByPk(email);
         const business = await Business.findByPk(rut);
@@ -49,7 +49,8 @@ export const createBusiness = async (req, res) => {
                 legalName,
                 description,
                 phone,
-                location
+                location,
+                webPage
             });
             const newUser = await User.create({
                 type: 'business',
@@ -70,7 +71,7 @@ export const createBusiness = async (req, res) => {
 export const updateBusiness = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, legalName, description, phone, location, rating } = req.body;
+        const { name, legalName, description, phone, location, rating, webPage } = req.body;
 
         const business = await Business.findByPk(id);
         if (business === null) {
@@ -82,6 +83,7 @@ export const updateBusiness = async (req, res) => {
             business.phone = phone;
             business.location = location;
             business.rating = rating;
+            business.webPage = webPage;
 
             await business.save();
 
@@ -115,7 +117,7 @@ export const getEventsFromBusiness = async (req, res) => {
 
 export const createEventFromBusiness = async (req, res) => {
     const { id } = req.params;
-    const { name, date, genrePreffered, description, time, equipment, paid, picture, applicationDeadline, multipleDates } = req.body;
+    const { name, date, genrePreffered, description, time, equipment, paid, picture, location, neighborhood } = req.body;
 
     try {
         const business = await Business.findByPk(id);
@@ -131,8 +133,8 @@ export const createEventFromBusiness = async (req, res) => {
                 equipment,
                 paid,
                 picture,
-                applicationDeadline,
-                multipleDates,
+                location,
+                neighborhood,
                 business_rut: id
             });
 
