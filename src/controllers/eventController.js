@@ -106,3 +106,26 @@ export const getEvent = async (req, res) => {
         return res.status(500).json({ message: error.message })
     }
 }
+
+export const getEventsUnassigned = async (req, res) => {
+    try {
+        const events = await Event.findAll({
+            where: {
+                [Op.and]: [
+                    {date: {[Op.gte]: new Date()}},
+                    {artist_assigned_id: null}
+                ]
+            },
+            order: [['date', 'ASC']],
+            include: [{
+                model: Business,
+                attributes: ['name'],
+            }
+            ]
+        });
+
+        res.status(200).json(events);
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
