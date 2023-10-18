@@ -1,5 +1,6 @@
 import { Event } from "../models/Event.js";
 import { Business } from "../models/Business.js";
+import { Artist } from "../models/Artist.js";
 import { Op } from 'sequelize';
 
 export const getEvents = async (req, res) => {
@@ -34,13 +35,13 @@ export const getEventsFiltered = async (req, res) => {
         filterConditions.neighborhood = neighborhood;
     }
     if (business) {
-        try{
+        try {
             const businessRUT = await Business.findOne({    // get businesses rut from name
                 where: { name: business },
-                attributes: ['rut'] 
+                attributes: ['rut']
             });
             filterConditions.business_rut = businessRUT.rut;
-        } catch(error){
+        } catch (error) {
             return res.status(500).json({ message: error.message })
         }
     }
@@ -53,7 +54,7 @@ export const getEventsFiltered = async (req, res) => {
         date = date.setDate(date.getDate() + 6);
     } else if (timeWindow == 2) {
         date = date.setDate(date.getDate() + 29);
-    } else if(timeWindow == 3){
+    } else if (timeWindow == 3) {
         date = date.setDate(date.getDate() + 59);
     }
 
@@ -80,4 +81,28 @@ export const getEventsFiltered = async (req, res) => {
         return res.status(500).json({ message: error.message })
     }
 
+}
+
+export const getEvent = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const event = await Event.findByPk(id, {
+            include: [{
+                model: Business,
+                attributes: ['name'],
+            },
+            {
+                model: Artist,
+                attributes: ['id', 'artisticName']
+
+            }]
+        });
+        if (event === null) {
+            res.status(404).json({ message: "Evento no encontrado" });
+        } else {
+            res.status(200).json(event);
+        }
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
 }
