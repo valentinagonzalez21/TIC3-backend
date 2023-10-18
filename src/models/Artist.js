@@ -24,7 +24,7 @@ export const Artist = sequelize.define('artist', {
         type: DataTypes.STRING,
     },
     picture: {
-        type: DataTypes.STRING
+        type: DataTypes.BLOB
     },
     description: {
         type: DataTypes.STRING
