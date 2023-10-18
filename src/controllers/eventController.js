@@ -73,7 +73,8 @@ export const getEventsFiltered = async (req, res) => {
 
     try {
         const events = await Event.findAll({
-            where: filterConditions
+            where: filterConditions,
+            order: [['date', 'ASC']],
         });
 
         res.status(200).json(events);
