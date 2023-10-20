@@ -1,6 +1,7 @@
 import { Event } from "../models/Event.js";
 import { Business } from "../models/Business.js";
 import { Artist } from "../models/Artist.js";
+import { Application } from "../models/Application.js";
 import { Op } from 'sequelize';
 
 export const getEvents = async (req, res) => {
@@ -113,8 +114,8 @@ export const getEventsUnassigned = async (req, res) => {
         const events = await Event.findAll({
             where: {
                 [Op.and]: [
-                    {date: {[Op.gte]: new Date()}},
-                    {artist_assigned_id: null}
+                    { date: { [Op.gte]: new Date() } },
+                    { artist_assigned_id: null }
                 ]
             },
             order: [['date', 'ASC']],
@@ -126,6 +127,35 @@ export const getEventsUnassigned = async (req, res) => {
         });
 
         res.status(200).json(events);
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
+
+export const createApplication = async (req, res) => {
+    const { id } = req.params;
+    const { artistId, msj } = req.body;
+    try {
+        // Check that application doesnt already exist
+        const application = await Application.findOne({ 
+            where: {
+                [Op.and]: [
+                    { event_id: id },
+                    { artist_id: artistId }
+                ]
+            }
+        });
+        if(application === null){
+            const newApplication = await Application.create({
+                msj,
+                event_id: id,
+                artist_id: artistId
+            });
+            res.status(200).json({ application: newApplication });
+        } else{
+            return res.status(409).json({ message: "Ya te has postulado para este evento" })
+        }
+        
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
