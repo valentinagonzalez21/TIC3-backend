@@ -30,7 +30,7 @@ export const Artist = sequelize.define('artist', {
         type: DataTypes.STRING
     },
     musicGenre: {
-        type: DataTypes.ENUM('pop', 'rock', 'jazz', 'clásic', 'alternativo', 'indie', 'cumbia', 'rap/trap', 'otro') //hay que ver como generalizar esto
+        type: DataTypes.ENUM('pop', 'rock', 'jazz', 'clásica', 'alternativo', 'indie', 'cumbia', 'rap/trap', 'otro') //hay que ver como generalizar esto
     },
     igUsername: {
         type: DataTypes.STRING

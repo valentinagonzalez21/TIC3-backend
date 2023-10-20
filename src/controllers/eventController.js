@@ -5,14 +5,19 @@ import { Op } from 'sequelize';
 
 export const getEvents = async (req, res) => {
     try {
-        const events = await Event.findAll({
-            include: [{
-                model: Business,
-                attributes: ['location'], // Include only the 'location' attribute from the Business model
-            }],
-        });
+        const events = await Event.findAll();
         console.log('Events retrieved successfully'); // Add this line for debugging
-        res.status(200).json(events)
+        const eventsWithBase64Images = events.map((event) => {
+            if (event.picture) {
+              // Convert the Buffer to a base64-encoded string
+              //const base64Image = `data:image/jpeg;base64,${event.picture.toString('base64')}`;
+              const base64Image = event.picture.toString('base64');
+              // Add the base64 picture to the event
+              event.picture = base64Image;
+            }
+            return event;
+          });
+        res.status(200).json(eventsWithBase64Images)
     } catch (error) {
         console.error(error); // Log the error for debugging
         return res.status(500).json({ message: error.message })
