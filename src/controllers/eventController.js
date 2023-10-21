@@ -10,14 +10,14 @@ export const getEvents = async (req, res) => {
         console.log('Events retrieved successfully'); // Add this line for debugging
         const eventsWithBase64Images = events.map((event) => {
             if (event.picture) {
-              // Convert the Buffer to a base64-encoded string
-              //const base64Image = `data:image/jpeg;base64,${event.picture.toString('base64')}`;
-              const base64Image = event.picture.toString('base64');
-              // Add the base64 picture to the event
-              event.picture = base64Image;
+                // Convert the Buffer to a base64-encoded string
+                //const base64Image = `data:image/jpeg;base64,${event.picture.toString('base64')}`;
+                const base64Image = event.picture.toString('base64');
+                // Add the base64 picture to the event
+                event.picture = base64Image;
             }
             return event;
-          });
+        });
         res.status(200).json(eventsWithBase64Images)
     } catch (error) {
         console.error(error); // Log the error for debugging
@@ -142,7 +142,7 @@ export const createApplication = async (req, res) => {
     const { artistId, msj } = req.body;
     try {
         // Check that application doesnt already exist
-        const application = await Application.findOne({ 
+        const application = await Application.findOne({
             where: {
                 [Op.and]: [
                     { event_id: id },
@@ -150,17 +150,31 @@ export const createApplication = async (req, res) => {
                 ]
             }
         });
-        if(application === null){
+        if (application === null) {
             const newApplication = await Application.create({
                 msj,
                 event_id: id,
                 artist_id: artistId
             });
             res.status(200).json({ application: newApplication });
-        } else{
+        } else {
             return res.status(409).json({ message: "Ya te has postulado para este evento" })
         }
-        
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
+
+export const assignArtistToEvent = async (req, res) => {
+    const { id } = req.params;
+    const { artistId } = req.body;
+    try {
+        const event = await Event.findByPk(id);
+        event.artist_assigned_id = artistId;
+        await event.save();
+
+        res.status(200).json({ event: event.id, artist: artistId });
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }

@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { getEvents, getEventsFiltered, getEvent, getEventsUnassigned, createApplication } from '../controllers/eventController.js';
+import { getEvents, getEventsFiltered, getEvent, getEventsUnassigned, createApplication, assignArtistToEvent } from '../controllers/eventController.js';
 
 const router = Router();
 
@@ -9,5 +9,6 @@ router.get("/events/filter", getEventsFiltered); // barrio, periodo, negocio, ge
 router.get("/events/unassigned", getEventsUnassigned);
 router.get("/events/:id", getEvent);
 router.post("/events/:id/application", createApplication);
+router.post("/events/:id/selection", assignArtistToEvent);
 
 export default router;
