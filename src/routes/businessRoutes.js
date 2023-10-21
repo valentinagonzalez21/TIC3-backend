@@ -1,4 +1,4 @@
-import { createBusiness, getBusiness, getBusinesses, updateBusiness, getEventsFromBusiness, createEventFromBusiness, getBusinessesNames, getUpcomingEventsFromBusiness } from '../controllers/businessController.js';
+import { createBusiness, getBusiness, getBusinesses, updateBusiness, getEventsFromBusiness, createEventFromBusiness, getBusinessesNames, getUpcomingEventsFromBusiness, getUnassignedEventsFromBusiness } from '../controllers/businessController.js';
 import {Router} from 'express';
 
 const router = Router();
@@ -11,5 +11,7 @@ router.put("/businesses/:id", updateBusiness);
 router.get("/businesses/:id/events", getEventsFromBusiness);
 router.post("/businesses/:id/events", createEventFromBusiness);
 router.get("/businesses/:id/events/upcoming", getUpcomingEventsFromBusiness);
+router.get("/businesses/:id/events/unassigned", getUnassignedEventsFromBusiness)
+
 
 export default router 

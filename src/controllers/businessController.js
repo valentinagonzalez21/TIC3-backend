@@ -1,6 +1,8 @@
 import { Business } from "../models/Business.js";
 import { Event } from "../models/Event.js";
 import { User } from "../models/User.js";
+import { Application } from "../models/Application.js";
+import { Artist } from "../models/Artist.js";
 import { Op } from 'sequelize';
 
 export const getBusinesses = async (req, res) => {
@@ -160,8 +162,6 @@ export const getUpcomingEventsFromBusiness = async (req, res) => {
             let currentYear = String(date.getFullYear());
             const today = currentYear + '-' + currentMonth + '-' + currentDay;
 
-            console.log(today)
-
             const events = await Event.findAll({
                 where: {
                     [Op.and]: [
@@ -174,6 +174,38 @@ export const getUpcomingEventsFromBusiness = async (req, res) => {
             res.status(200).json({ events: events });
         }
 
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+export const getUnassignedEventsFromBusiness = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const business = await Business.findByPk(id);
+        if (business === null) {
+            res.status(404).json({ message: "Negocio no encontrado" });
+        } else {
+            const events = await Event.findAll({
+                where: {
+                    [Op.and]: [
+                        { business_rut: id },
+                        { date: { [Op.gte]: new Date() } },
+                        { artist_assigned_id: null }
+                    ]
+                },
+                order: [['date', 'ASC']],
+                include: [{
+                    model: Application,
+                    include: [{
+                        model: Artist,
+                        attributes: ['id', 'artisticName'],
+                    }]
+                }
+                ]
+            });
+            res.status(200).json({ events: events });
+        }
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
