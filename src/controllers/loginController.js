@@ -1,6 +1,7 @@
 import { Artist } from "../models/Artist.js";
 import { Business } from "../models/Business.js";
 import { User } from "../models/User.js";
+import { Notification } from "../models/Notification.js";
 
 export const login = async (req, res) => {
     try {
@@ -11,16 +12,25 @@ export const login = async (req, res) => {
         if (user !== null) {
             const type = user.type;
             let userComplete;
+            const notificationsFilter = {};
 
             if (password === user.password) {
                 if (type === 'artist') {
                     const artistId = user.artist_id;
                     userComplete = await Artist.findByPk(artistId);
+                    notificationsFilter.artist_id = artistId;
                 } else if (type === 'business') {
                     const businessId = user.business_rut;
                     userComplete = await Business.findByPk(businessId);
+                    notificationsFilter.business_rut = businessId;
                 }
-                res.status(200).json({ type: type, msg: "Usuario válido", user: userComplete });
+
+                notificationsFilter.seen = false;
+                const notifications = await Notification.findAll({
+                    where: notificationsFilter
+                });
+
+                res.status(200).json({ type: type, msg: "Usuario válido", user: userComplete, notifications: notifications });
             } else {
                 res.status(200).json({ type: null, msg: "Contraseña incorrecta" });
             }

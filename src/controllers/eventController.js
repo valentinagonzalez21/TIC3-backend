@@ -2,6 +2,7 @@ import { Event } from "../models/Event.js";
 import { Business } from "../models/Business.js";
 import { Artist } from "../models/Artist.js";
 import { Application } from "../models/Application.js";
+import { Notification } from "../models/Notification.js";
 import { Op } from 'sequelize';
 
 export const getEvents = async (req, res) => {
@@ -173,6 +174,13 @@ export const assignArtistToEvent = async (req, res) => {
         const event = await Event.findByPk(id);
         event.artist_assigned_id = artistId;
         await event.save();
+        
+        const notification = await Notification.create({
+            seen: false,
+            msj: "Fuiste seleccionado para el evento " + event.name + "!",
+            type: 'selection',
+            artist_id: artistId
+        });
 
         res.status(200).json({ event: event.id, artist: artistId });
     } catch (error) {
