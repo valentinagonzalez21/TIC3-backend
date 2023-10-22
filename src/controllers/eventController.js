@@ -4,6 +4,8 @@ import { Artist } from "../models/Artist.js";
 import { Application } from "../models/Application.js";
 import { Notification } from "../models/Notification.js";
 import { Op } from 'sequelize';
+import {sequelize} from '../database/database.js';
+
 
 export const getEvents = async (req, res) => {
     try {
@@ -174,7 +176,7 @@ export const assignArtistToEvent = async (req, res) => {
         const event = await Event.findByPk(id);
         event.artist_assigned_id = artistId;
         await event.save();
-        
+
         const notification = await Notification.create({
             seen: false,
             msj: "Fuiste seleccionado para el evento " + event.name + "!",
@@ -183,6 +185,18 @@ export const assignArtistToEvent = async (req, res) => {
         });
 
         res.status(200).json({ event: event.id, artist: artistId });
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
+
+export const getNeighborhoodsOfEvents = async (req, res) => {
+    try {
+        const events = await Event.findAll({
+            //attributes: ['neighborhood'],
+            attributes: [[sequelize.fn('DISTINCT', sequelize.col('neighborhood')), 'neighborhood']], // para que no haya duplicados
+        });
+        res.status(200).json({ neighborhoods: events });
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
