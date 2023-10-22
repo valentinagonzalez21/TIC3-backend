@@ -99,11 +99,11 @@ export const getEvent = async (req, res) => {
         const event = await Event.findByPk(id, {
             include: [{
                 model: Business,
-                attributes: ['name'],
+                attributes: ['name', 'webPage'],
             },
             {
                 model: Artist,
-                attributes: ['id', 'artisticName']
+                attributes: ['id', 'artisticName', 'picture']
 
             }]
         });
