@@ -9,7 +9,15 @@ import {sequelize} from '../database/database.js';
 
 export const getEvents = async (req, res) => {
     try {
-        const events = await Event.findAll();
+        const events = await Event.findAll({
+            where: {
+                [Op.and]: [
+                    { date: { [Op.gte]: new Date() } },
+                    { artist_assigned_id: {[Op.not]: null }} // eventos que tengan artistas asignados
+                ]
+            },
+            order: [['date', 'ASC']],
+        });
         console.log('Events retrieved successfully'); // Add this line for debugging
         const eventsWithBase64Images = events.map((event) => {
             if (event.picture) {
