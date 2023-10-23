@@ -17,7 +17,13 @@ export const getArtists = async (req, res) => {
 export const getArtist = async (req, res) => {
     try {
         const { id } = req.params;
-        const artist = await Artist.findByPk(id);
+        const artist = await Artist.findByPk(id, {
+            include: [{
+                model: User,
+                attributes: ['email'],
+            }
+            ]
+        });
         if (artist === null) {
             res.status(404).json({ message: "Usuario no encontrado" });
         } else {

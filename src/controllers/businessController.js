@@ -28,7 +28,13 @@ export const getBusinessesNames = async (req, res) => {
 export const getBusiness = async (req, res) => {
     try {
         const { id } = req.params;
-        const business = await Business.findByPk(id);
+        const business = await Business.findByPk(id, {
+            include: [{
+                model: User,
+                attributes: ['email'],
+            }
+            ]
+        });
         if (business === null) {
             res.status(404).json({ message: "Usuario no encontrado" });
         } else {
@@ -195,16 +201,16 @@ export const getUnassignedEventsFromBusiness = async (req, res) => {
                     ]
                 },
                 order: [['date', 'ASC']],
-                include: [{
+            /*    include: [{
                     model: Application,
                     include: [{
                         model: Artist,
                         attributes: ['id', 'artisticName'],
                     }]
                 }
-                ]
+                ]*/
             });
-            res.status(200).json({ events: events });
+            res.status(200).json({events});
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });
