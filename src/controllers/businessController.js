@@ -201,14 +201,14 @@ export const getUnassignedEventsFromBusiness = async (req, res) => {
                     ]
                 },
                 order: [['date', 'ASC']],
-            /*    include: [{
+                include: [{
                     model: Application,
                     include: [{
                         model: Artist,
                         attributes: ['id', 'artisticName'],
                     }]
                 }
-                ]*/
+                ]
             });
             res.status(200).json({events});
         }
