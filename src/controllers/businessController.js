@@ -210,7 +210,7 @@ export const getUnassignedEventsFromBusiness = async (req, res) => {
                 }
                 ]
             });
-            res.status(200).json({events});
+            res.status(200).json(events);
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });
