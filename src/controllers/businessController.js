@@ -177,7 +177,7 @@ export const getUpcomingEventsFromBusiness = async (req, res) => {
                 },
                 order: [['date', 'ASC']], // los mas cercanos a hoy primero
             });
-            res.status(200).json({ events: events });
+            res.status(200).json(events);
         }
 
     } catch (error) {
