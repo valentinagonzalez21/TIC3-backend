@@ -100,7 +100,7 @@ export const updateBusiness = async (req, res) => {
             business.rating = rating;
             business.webPage = webPage;
 
-            if(password){
+            if (password) {
                 user.password = password;
                 await user.save();
             }
@@ -185,10 +185,19 @@ export const getUpcomingEventsFromBusiness = async (req, res) => {
                     [Op.and]: [
                         { business_rut: id },
                         { date: { [Op.gte]: today } },
-                        { artist_assigned_id: {[Op.not]: null} }
+                        { artist_assigned_id: { [Op.not]: null } }
                     ]
                 },
                 order: [['date', 'ASC']], // los mas cercanos a hoy primero
+                include: [{
+                    model: Artist,
+                    attributes: ['name', 'artisticName', 'phone'],
+                    include: [{
+                        model: User,
+                        attributes: ['email']
+                    }]
+                }
+                ]
             });
             res.status(200).json(events);
         }
