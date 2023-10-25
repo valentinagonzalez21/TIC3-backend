@@ -62,25 +62,21 @@ export const createArtist = async (req, res) => {
     }
 }
 
-export const updateArtist = async (req, res) => {
+export const updateProfile = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, lastName, phone, artisticName, picture, description, musicGenre, igUsername, links, rating } = req.body;
+        const { artisticName, picture, description, musicGenre, igUsername, links } = req.body;
 
         const artist = await Artist.findByPk(id);
         if (artist === null) {
             res.status(404).json({ message: "Usuario no existe" });
         } else {
-            artist.name = name;
-            artist.lastName = lastName;
-            artist.phone = phone;
             artist.artisticName = artisticName;
             artist.picture = picture;
             artist.description = description;
             artist.musicGenre = musicGenre;
             artist.igUsername = igUsername;
             artist.links = links;
-            artist.rating = rating;
 
             await artist.save();
 
@@ -89,8 +85,40 @@ export const updateArtist = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
+}
 
+export const updateAccount = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, lastName, phone, password } = req.body;
 
+        const artist = await Artist.findByPk(id, {
+            attributes: ['id', 'name', 'lastName', 'phone']
+        });
+        const user = await User.findOne({
+            where: {
+                artist_id: id
+            },
+            attributes: ['email', 'password']
+        });
+
+        if (artist === null) {
+            res.status(404).json({ message: "Usuario no existe" });
+        } else {
+            artist.name = name;
+            artist.lastName = lastName;
+            artist.phone = phone;
+            
+            user.password = password;
+
+            await artist.save();
+            await user.save();
+
+            res.status(200).json(artist);
+        }
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
 }
 
 export const getArtistAccount = async (req, res) => {
