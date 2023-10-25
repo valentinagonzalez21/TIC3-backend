@@ -3,6 +3,7 @@ import { User } from "../models/User.js";
 import { Event } from "../models/Event.js";
 import { Notification } from "../models/Notification.js";
 import { Op } from 'sequelize';
+import { Business } from "../models/Business.js";
 
 export const getArtists = async (req, res) => {
     try {
@@ -123,8 +124,6 @@ export const getUpcomingEventsFromArtist = async (req, res) => {
             let currentYear = String(date.getFullYear());
             const today = currentYear + '-' + currentMonth + '-' + currentDay;
 
-            console.log(today)
-
             const events = await Event.findAll({
                 where: {
                     [Op.and]: [
@@ -133,8 +132,16 @@ export const getUpcomingEventsFromArtist = async (req, res) => {
                     ]
                 },
                 order: [['date', 'ASC']], // los mas cercanos a hoy primero
+                include: [{
+                    model: Business,
+                    attributes: ['name', 'phone'],
+                    include: [{
+                        model: User,
+                        attributes:['email'],
+                    }],
+                }],
             });
-            res.status(200).json({ events: events });
+            res.status(200).json(events);
         }
 
     } catch (error) {
