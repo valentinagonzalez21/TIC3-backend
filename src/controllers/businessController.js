@@ -184,7 +184,8 @@ export const getUpcomingEventsFromBusiness = async (req, res) => {
                 where: {
                     [Op.and]: [
                         { business_rut: id },
-                        { date: { [Op.gte]: today } }
+                        { date: { [Op.gte]: today } },
+                        { artist_assigned_id: {[Op.not]: null} }
                     ]
                 },
                 order: [['date', 'ASC']], // los mas cercanos a hoy primero
