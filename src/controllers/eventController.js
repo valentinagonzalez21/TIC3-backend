@@ -90,6 +90,8 @@ export const getEventsFiltered = async (req, res) => {
 
     if(unassigned){
         filterConditions.artist_assigned_id = null
+    } else {
+        filterConditions.artist_assigned_id = {[Op.not]: null}
     }
 
     try {
