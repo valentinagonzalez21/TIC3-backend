@@ -93,6 +93,23 @@ export const updateArtist = async (req, res) => {
 
 }
 
+export const getArtistAccount = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const artist = await Artist.findByPk(id, {
+            attributes: ['id', 'name', 'lastName', 'phone'],
+            include: [{
+                model: User,
+                attributes: ['email'],
+            }
+            ]
+        });
+        res.status(200).json(artist);
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+
+}
 export const getUpcomingEventsFromArtist = async (req, res) => {
     try {
         const { id } = req.params;
