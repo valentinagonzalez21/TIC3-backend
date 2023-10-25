@@ -44,7 +44,7 @@ export const getEventsFiltered = async (req, res) => {
     // 2 - Next 30 days
     // 3 - Next 60 days
 
-    let { neighborhood, timeWindow, business, genre } = req.query;
+    let { neighborhood, timeWindow, business, genre, unassigned } = req.query;
 
     const filterConditions = {};
 
@@ -86,6 +86,10 @@ export const getEventsFiltered = async (req, res) => {
         filterConditions.date = {
             [Op.gte]: new Date(), // evento.date >= today
         };
+    }
+
+    if(unassigned){
+        filterConditions.artist_assigned_id = null
     }
 
     try {
