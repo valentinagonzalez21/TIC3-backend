@@ -108,11 +108,14 @@ export const updateAccount = async (req, res) => {
             artist.name = name;
             artist.lastName = lastName;
             artist.phone = phone;
-            
-            user.password = password;
+
+            if (password) {
+                user.password = password;
+                await user.save();
+            }
 
             await artist.save();
-            await user.save();
+
 
             res.status(200).json(artist);
         }

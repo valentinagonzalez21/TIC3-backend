@@ -79,9 +79,16 @@ export const createBusiness = async (req, res) => {
 export const updateBusiness = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, legalName, description, phone, location, rating, webPage } = req.body;
+        const { name, legalName, description, phone, location, rating, webPage, password } = req.body;
 
         const business = await Business.findByPk(id);
+        const user = await User.findOne({
+            where: {
+                business_rut: id
+            },
+            attributes: ['email', 'password']
+        });
+
         if (business === null) {
             res.status(404).json({ message: "Usuario no existe" });
         } else {
@@ -92,6 +99,11 @@ export const updateBusiness = async (req, res) => {
             business.location = location;
             business.rating = rating;
             business.webPage = webPage;
+
+            if(password){
+                user.password = password;
+                await user.save();
+            }
 
             await business.save();
 
