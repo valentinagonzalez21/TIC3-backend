@@ -45,6 +45,7 @@ export const createArtist = async (req, res) => {
                 name,
                 lastName,
                 phone,
+                artisticName: name
             });
             const newUser = await User.create({
                 type: 'artist',
@@ -71,7 +72,9 @@ export const updateProfile = async (req, res) => {
         if (artist === null) {
             res.status(404).json({ message: "Usuario no existe" });
         } else {
-            artist.artisticName = artisticName;
+            if (artisticName) {
+                artist.artisticName = artisticName;
+            }
             artist.picture = picture;
             artist.description = description;
             artist.musicGenre = musicGenre;
