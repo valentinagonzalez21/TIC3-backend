@@ -79,9 +79,16 @@ export const createBusiness = async (req, res) => {
 export const updateBusiness = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, legalName, description, phone, location, rating, webPage } = req.body;
+        const { name, legalName, description, phone, location, rating, webPage, password } = req.body;
 
         const business = await Business.findByPk(id);
+        const user = await User.findOne({
+            where: {
+                business_rut: id
+            },
+            attributes: ['email', 'password']
+        });
+
         if (business === null) {
             res.status(404).json({ message: "Usuario no existe" });
         } else {
@@ -92,6 +99,11 @@ export const updateBusiness = async (req, res) => {
             business.location = location;
             business.rating = rating;
             business.webPage = webPage;
+
+            if (password) {
+                user.password = password;
+                await user.save();
+            }
 
             await business.save();
 
@@ -172,10 +184,20 @@ export const getUpcomingEventsFromBusiness = async (req, res) => {
                 where: {
                     [Op.and]: [
                         { business_rut: id },
-                        { date: { [Op.gte]: today } }
+                        { date: { [Op.gte]: today } },
+                        { artist_assigned_id: { [Op.not]: null } }
                     ]
                 },
                 order: [['date', 'ASC']], // los mas cercanos a hoy primero
+                include: [{
+                    model: Artist,
+                    attributes: ['name', 'artisticName', 'phone'],
+                    include: [{
+                        model: User,
+                        attributes: ['email']
+                    }]
+                }
+                ]
             });
             res.status(200).json(events);
         }
