@@ -19,16 +19,15 @@ export const getEvents = async (req, res) => {
             order: [['date', 'ASC']],
         });
         console.log('Events retrieved successfully'); // Add this line for debugging
+
         const eventsWithBase64Images = events.map((event) => {
             if (event.picture) {
-                // Convert the Buffer to a base64-encoded string
-                //const base64Image = `data:image/jpeg;base64,${event.picture.toString('base64')}`;
-                const base64Image = event.picture.toString('base64');
-                // Add the base64 picture to the event
-                event.picture = base64Image;
-            }
+                event.picture = Buffer.from(event.picture, 'base64').toString();
+                event.picture = "data:image/png;base64," + event.picture;
+            } 
             return event;
         });
+
         res.status(200).json(eventsWithBase64Images)
     } catch (error) {
         console.error(error); // Log the error for debugging
@@ -100,7 +99,15 @@ export const getEventsFiltered = async (req, res) => {
             order: [['date', 'ASC']],
         });
 
-        res.status(200).json(events);
+        const eventsWithBase64Images = events.map((event) => {
+            if (event.picture) {
+                event.picture = Buffer.from(event.picture, 'base64').toString();
+                event.picture = "data:image/png;base64," + event.picture;
+            } 
+            return event;
+        });
+
+        res.status(200).json(eventsWithBase64Images);
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
@@ -124,6 +131,10 @@ export const getEvent = async (req, res) => {
         if (event === null) {
             res.status(404).json({ message: "Evento no encontrado" });
         } else {
+            if (event.picture) {
+                event.picture = Buffer.from(event.picture, 'base64').toString();
+                event.picture = "data:image/png;base64," + event.picture;
+            } 
             res.status(200).json(event);
         }
     } catch (error) {
@@ -148,7 +159,15 @@ export const getEventsUnassigned = async (req, res) => {
             ]
         });
 
-        res.status(200).json(events);
+        const eventsWithBase64Images = events.map((event) => {
+            if (event.picture) {
+                event.picture = Buffer.from(event.picture, 'base64').toString();
+                event.picture = "data:image/png;base64," + event.picture;
+            } 
+            return event;
+        });
+
+        res.status(200).json(eventsWithBase64Images);
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }

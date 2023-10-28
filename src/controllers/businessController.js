@@ -145,6 +145,7 @@ export const createEventFromBusiness = async (req, res) => {
             res.status(404).json({ message: "Negocio no encontrado" });
         } else {
             console.log('estoy aca');
+            //picture.slice(22)
             const newEvent = await Event.create({
                 name,
                 date,
@@ -232,7 +233,16 @@ export const getUnassignedEventsFromBusiness = async (req, res) => {
                 }
                 ]
             });
-            res.status(200).json(events);
+
+            const eventsWithBase64Images = events.map((event) => {
+                if (event.picture) {
+                    event.picture = Buffer.from(event.picture, 'base64').toString();
+                    event.picture = "data:image/png;base64," + event.picture;
+                } 
+                return event;
+            });
+
+            res.status(200).json(eventsWithBase64Images);
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });
