@@ -146,7 +146,7 @@ export const getEventsFromBusiness = async (req, res) => {
 
 export const createEventFromBusiness = async (req, res) => {
     const { id } = req.params;
-    const { name, date, genrePreffered, description, time, equipment, paid, picture, location, neighborhood } = req.body;
+    let { name, date, genrePreffered, description, time, equipment, paid, picture, location, neighborhood } = req.body;
 
     try {
         const business = await Business.findByPk(id);
@@ -155,6 +155,10 @@ export const createEventFromBusiness = async (req, res) => {
         } else {
             console.log('estoy aca');
             //picture.slice(22)
+            if(picture === "" || picture === undefined){
+                picture = null;
+            }
+
             const newEvent = await Event.create({
                 name,
                 date,
