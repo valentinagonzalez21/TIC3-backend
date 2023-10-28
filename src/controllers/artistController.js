@@ -175,7 +175,16 @@ export const getUpcomingEventsFromArtist = async (req, res) => {
                     }],
                 }],
             });
-            res.status(200).json(events);
+
+            const eventsWithBase64Images = events.map((event) => {
+                if (event.picture) {
+                    event.picture = Buffer.from(event.picture, 'base64').toString();
+                    event.picture = "data:image/png;base64," + event.picture;
+                } 
+                return event;
+            });
+
+            res.status(200).json(eventsWithBase64Images);
         }
 
     } catch (error) {
