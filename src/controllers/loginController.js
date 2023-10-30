@@ -27,10 +27,24 @@ export const login = async (req, res) => {
 
                 notificationsFilter.seen = false;
                 const notifications = await Notification.findAll({
-                    where: notificationsFilter
+                    where: notificationsFilter,
+                    order: [['createdAt', 'DESC']],
                 });
 
-                res.status(200).json({ type: type, msg: "Usuario válido", user: userComplete, notifications: notifications });
+                let seenNotifications = [];
+
+                if(notifications.length < 5){
+                    let remaining = 5 - notifications.length;
+                    notificationsFilter.seen = true;
+
+                    seenNotifications= await Notification.findAll({
+                        where: notificationsFilter,
+                        limit: remaining,
+                        order: [['createdAt', 'DESC']],
+                    });
+                }
+
+                res.status(200).json({ type: type, msg: "Usuario válido", user: userComplete, unseenNotifications: notifications, seenNotifications: seenNotifications });
             } else {
                 res.status(200).json({ type: null, msg: "Contraseña incorrecta" });
             }
