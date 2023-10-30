@@ -27,11 +27,11 @@ export const Notification = sequelize.define('notification', {
     });
 
 Business.hasMany(Notification, {
-    foreignKey: 'bussiness_rut',
+    foreignKey: 'business_rut',
     sourceKey: 'rut'
 });
 Notification.belongsTo(Business, {
-    foreignKey: 'bussiness_rut',
+    foreignKey: 'business_rut',
     targetId: 'rut'
 });
 
