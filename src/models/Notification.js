@@ -21,6 +21,9 @@ export const Notification = sequelize.define('notification', {
         type: DataTypes.STRING
     },
 
+},
+{
+    timestamps: false
 });
 
 Business.hasMany(Notification, {
