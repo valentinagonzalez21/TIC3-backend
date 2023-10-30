@@ -28,6 +28,10 @@ export const getArtist = async (req, res) => {
         if (artist === null) {
             res.status(404).json({ message: "Usuario no encontrado" });
         } else {
+            if (artist.picture) {
+                artist.picture = Buffer.from(artist.picture, 'base64').toString();
+                artist.picture = "data:image/png;base64," + artist.picture;
+            } 
             res.status(200).json(artist);
         }
     } catch (error) {
