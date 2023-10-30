@@ -212,7 +212,7 @@ export const assignArtistToEvent = async (req, res) => {
 
         const notification = await Notification.create({
             seen: false,
-            msj: "Fuiste seleccionado para el evento " + event.name + "!",
+            msj: event.name,
             type: 'selection',
             artist_id: artistId
         });
