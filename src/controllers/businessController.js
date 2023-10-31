@@ -205,7 +205,7 @@ export const getUpcomingEventsFromBusiness = async (req, res) => {
                 order: [['date', 'ASC']], // los mas cercanos a hoy primero
                 include: [{
                     model: Artist,
-                    attributes: ['name', 'artisticName', 'phone'],
+                    attributes: ['name', 'lastName', 'artisticName', 'phone'],
                     include: [{
                         model: User,
                         attributes: ['email']
