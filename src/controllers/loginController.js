@@ -12,39 +12,17 @@ export const login = async (req, res) => {
         if (user !== null) {
             const type = user.type;
             let userComplete;
-            const notificationsFilter = {};
 
             if (password === user.password) {
                 if (type === 'artist') {
                     const artistId = user.artist_id;
                     userComplete = await Artist.findByPk(artistId);
-                    notificationsFilter.artist_id = artistId;
                 } else if (type === 'business') {
                     const businessId = user.business_rut;
                     userComplete = await Business.findByPk(businessId);
-                    notificationsFilter.business_rut = businessId;
                 }
 
-                notificationsFilter.seen = false;
-                const notifications = await Notification.findAll({
-                    where: notificationsFilter,
-                    order: [['createdAt', 'DESC']],
-                });
-
-                let seenNotifications = [];
-
-                if(notifications.length < 5){
-                    let remaining = 5 - notifications.length;
-                    notificationsFilter.seen = true;
-
-                    seenNotifications= await Notification.findAll({
-                        where: notificationsFilter,
-                        limit: remaining,
-                        order: [['createdAt', 'DESC']],
-                    });
-                }
-
-                res.status(200).json({ type: type, msg: "Usuario válido", user: userComplete, unseenNotifications: notifications, seenNotifications: seenNotifications });
+                res.status(200).json({ type: type, msg: "Usuario válido", user: userComplete});
             } else {
                 res.status(200).json({ type: null, msg: "Contraseña incorrecta" });
             }

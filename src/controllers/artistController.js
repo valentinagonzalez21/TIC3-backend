@@ -31,7 +31,7 @@ export const getArtist = async (req, res) => {
             if (artist.picture) {
                 artist.picture = Buffer.from(artist.picture, 'base64').toString();
                 artist.picture = "data:image/png;base64," + artist.picture;
-            } 
+            }
             res.status(200).json(artist);
         }
     } catch (error) {
@@ -175,7 +175,7 @@ export const getUpcomingEventsFromArtist = async (req, res) => {
                     attributes: ['name', 'phone'],
                     include: [{
                         model: User,
-                        attributes:['email'],
+                        attributes: ['email'],
                     }],
                 }],
             });
@@ -184,7 +184,7 @@ export const getUpcomingEventsFromArtist = async (req, res) => {
                 if (event.picture) {
                     event.picture = Buffer.from(event.picture, 'base64').toString();
                     event.picture = "data:image/png;base64," + event.picture;
-                } 
+                }
                 return event;
             });
 
@@ -226,3 +226,28 @@ export const viewNotifications = async (req, res) => {
     }
 }
 
+export const getNotifications = async (req, res) => {
+    const { id } = req.params;
+    const unseenNotifications = await Notification.findAll({
+        where: {
+            artist_id: id,
+            seen: false
+        },
+        order: [['createdAt', 'DESC']],
+    });
+
+    let seenNotifications = [];
+
+    if (unseenNotifications.length < 5) {
+        let remaining = 5 - unseenNotifications.length;
+        seenNotifications = await Notification.findAll({
+            where: {
+                artist_id: id,
+                seen: true
+            },
+            limit: remaining,
+            order: [['createdAt', 'DESC']],
+        });
+    }
+    res.status(200).json({ unseenNotifications: unseenNotifications, seenNotifications: seenNotifications });
+}
