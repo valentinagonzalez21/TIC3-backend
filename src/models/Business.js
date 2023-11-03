@@ -21,7 +21,7 @@ export const Business = sequelize.define('business', {
         type: DataTypes.STRING,
     },
     phone: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },
     location: {

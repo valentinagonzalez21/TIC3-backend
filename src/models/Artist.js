@@ -17,7 +17,7 @@ export const Artist = sequelize.define('artist', {
         allowNull: false
     },
     phone: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },
     artisticName: {
