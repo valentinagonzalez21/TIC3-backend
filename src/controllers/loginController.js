@@ -22,12 +22,12 @@ export const login = async (req, res) => {
                     userComplete = await Business.findByPk(businessId);
                 }
 
-                res.status(200).json({ type: type, msg: "Usuario válido", user: userComplete});
+                res.status(200).json({ type: type, message: "Usuario válido", user: userComplete});
             } else {
-                res.status(200).json({ type: null, msg: "Contraseña incorrecta" });
+                res.status(401).json({ type: null, message: "Contraseña incorrecta" });
             }
         } else {
-            res.status(200).json({ type: null, message: 'Usuario o contraseña incorrecta' });
+            res.status(401).json({ type: null, message: 'Usuario o contraseña incorrecta' });
         }
     }
     catch (error) {
